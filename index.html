@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Money Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">💰 Personal Money Manager</div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="dashboard">ড্যাশবোর্ড</a></li>
+                        <li><a href="#" class="nav-link" data-page="transactions">লেনদেন</a></li>
+                        <li><a href="#" class="nav-link" data-page="reports">রিপোর্ট</a></li>
+                        <li><a href="#" class="nav-link" data-page="upcoming">আসন্ন খরচ</a></li>
+                        <li><a href="#" class="nav-link" data-page="settings">সেটিংস</a></li>
+                    </ul>
+                </nav>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <h2 class="page-title">ড্যাশবোর্ড</h2>
+            
+            <div class="summary-cards">
+                <div class="summary-card income">
+                    <h3>মোট আয়</h3>
+                    <div class="amount" id="totalIncome">৳ 0</div>
+                </div>
+                <div class="summary-card expense">
+                    <h3>মোট খরচ</h3>
+                    <div class="amount" id="totalExpense">৳ 0</div>
+                </div>
+                <div class="summary-card balance">
+                    <h3>বর্তমান ব্যালেন্স</h3>
+                    <div class="amount" id="currentBalance">৳ 0</div>
+                </div>
+                <div class="summary-card savings">
+                    <h3>মোট সঞ্চয়</h3>
+                    <div class="amount" id="totalSavings">৳ 0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>আসন্ন খরচের রিমাইন্ডার</h3>
+                <div id="upcomingReminders"></div>
+            </div>
+
+            <div class="card">
+                <h3>সাম্প্রতিক লেনদেন</h3>
+                <div id="recentTransactions"></div>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div id="transactions" class="page">
+            <h2 class="page-title">লেনদেন ব্যবস্থাপনা</h2>
+            
+            <div class="card">
+                <h3>নতুন লেনদেন যোগ করুন</h3>
+                <form id="transactionForm">
+                    <div class="form-group">
+                        <label for="type">লেনদেনের ধরন</label>
+                        <select id="type" required>
+                            <option value="">নির্বাচন করুন</option>
+                            <option value="income">আয়</option>
+                            <option value="expense">খরচ</option>
+                            <option value="saving">সঞ্চয়</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">টাকার পরিমাণ</label>
+                        <input type="number" id="amount" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group" id="categoryGroup">
+                        <label for="category">ক্যাটাগরি</label>
+                        <select id="category">
+                            <option value="">নির্বাচন করুন</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="sourceGroup" style="display: none;">
+                        <label for="source">উৎস</label>
+                        <input type="text" id="source">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">তারিখ</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">বিবরণ (ঐচ্ছিক)</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit">লেনদেন যোগ করুন</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>লেনদেনের তালিকা</h3>
+                <div class="filter-options">
+                    <select id="filterType">
+                        <option value="all">সব লেনদেন</option>
+                        <option value="income">শুধু আয়</option>
+                        <option value="expense">শুধু খরচ</option>
+                        <option value="saving">শুধু সঞ্চয়</option>
+                    </select>
+                    
+                    <select id="filterCategory">
+                        <option value="all">সব ক্যাটাগরি</option>
+                    </select>
+                    
+                    <input type="month" id="filterMonth">
+                </div>
+                
+                <div id="transactionList"></div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports" class="page">
+            <h2 class="page-title">আর্থিক রিপোর্ট</h2>
+            
+            <div class="card">
+                <h3>মাসিক সারাংশ</h3>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>খরচের ক্যাটাগরি অনুযায়ী বিভাজন</h3>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>রিপোর্ট ডাউনলোড</h3>
+                <button id="exportPDF" class="btn-danger">PDF হিসেবে ডাউনলোড</button>
+                <button id="exportCSV" class="btn-success">CSV হিসেবে ডাউনলোড</button>
+            </div>
+        </div>
+
+        <!-- Upcoming Expenses Page -->
+        <div id="upcoming" class="page">
+            <h2 class="page-title">আসন্ন খরচ ব্যবস্থাপনা</h2>
+            
+            <div class="card">
+                <h3>আসন্ন খরচ যোগ করুন</h3>
+                <form id="upcomingForm">
+                    <div class="form-group">
+                        <label for="upcomingTitle">খরচের বিবরণ</label>
+                        <input type="text" id="upcomingTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingAmount">টাকার পরিমাণ</label>
+                        <input type="number" id="upcomingAmount" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingCategory">ক্যাটাগরি</label>
+                        <select id="upcomingCategory" required>
+                            <option value="rent">বাড়ি ভাড়া</option>
+                            <option value="utilities">ইউটিলিটি বিল</option>
+                            <option value="loan">লোন</option>
+                            <option value="insurance">বীমা</option>
+                            <option value="other">অন্যান্য</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingDueDate">নির্ধারিত তারিখ</label>
+                        <input type="date" id="upcomingDueDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingNotes">মন্তব্য (ঐচ্ছিক)</label>
+                        <textarea id="upcomingNotes" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit">খরচ যোগ করুন</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>আসন্ন খরচের তালিকা</h3>
+                <div id="upcomingList"></div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page">
+            <h2 class="page-title">সেটিংস</h2>
+            
+            <div class="card">
+                <h3>সাধারণ সেটিংস</h3>
+                
+                <div class="settings-option">
+                    <label for="currency">মুদ্রা</label>
+                    <select id="currency">
+                        <option value="BDT">বাংলাদেশী টাকা (৳)</option>
+                        <option value="USD">ইউএস ডলার ($)</option>
+                        <option value="EUR">ইউরো (€)</option>
+                        <option value="GBP">ব্রিটিশ পাউন্ড (£)</option>
+                        <option value="INR">ভারতীয় রুপী (₹)</option>
+                    </select>
+                </div>
+                
+                <div class="settings-option">
+                    <label for="dateFormat">তারিখ ফরম্যাট</label>
+                    <select id="dateFormat">
+                        <option value="dd-mm-yyyy">DD-MM-YYYY</option>
+                        <option value="mm-dd-yyyy">MM-DD-YYYY</option>
+                        <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                    </select>
+                </div>
+                
+                <div class="settings-option">
+                    <label>ডার্ক মোড</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <button id="saveSettings">সেটিংস সংরক্ষণ করুন</button>
+            </div>
+
+            <div class="card">
+                <h3>ডেটা ব্যবস্থাপনা</h3>
+                <button id="exportData" class="btn-success">সমস্ত ডেটা এক্সপোর্ট করুন</button>
+                <button id="importData" class="btn-success">ডেটা ইম্পোর্ট করুন</button>
+                <button id="clearData" class="btn-danger">সমস্ত ডেটা মুছুন</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
