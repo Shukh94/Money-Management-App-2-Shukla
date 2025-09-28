@@ -1,0 +1,354 @@
+/* Dashboard Specific Styles */
+
+/* Quick Actions */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+}
+
+.quick-action-btn i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.quick-action-btn span {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Dashboard Charts Mini */
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.mini-chart {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    height: 200px;
+}
+
+/* Recent Activity */
+.recent-activity {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.3s;
+}
+
+.activity-item:hover {
+    background-color: var(--background);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-weight: bold;
+    color: white;
+}
+
+.activity-icon.income {
+    background-color: var(--income);
+}
+
+.activity-icon.expense {
+    background-color: var(--expense);
+}
+
+.activity-icon.saving {
+    background-color: var(--savings);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.activity-description {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+.activity-date {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.activity-amount {
+    font-weight: 600;
+    text-align: right;
+}
+
+.activity-amount.positive {
+    color: var(--income);
+}
+
+.activity-amount.negative {
+    color: var(--expense);
+}
+
+/* Financial Health Indicator */
+.financial-health {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.health-meter {
+    flex: 1;
+    height: 10px;
+    background-color: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.health-progress {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.health-progress.excellent {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.health-progress.good {
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+.health-progress.poor {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.health-label {
+    font-weight: 600;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Budget Progress */
+.budget-progress {
+    margin-bottom: 1.5rem;
+}
+
+.budget-item {
+    margin-bottom: 1rem;
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.budget-name {
+    font-weight: 600;
+}
+
+.budget-amount {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.budget-bar {
+    height: 8px;
+    background-color: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.budget-progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.budget-progress-bar.under {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.budget-progress-bar.over {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.budget-progress-bar.warning {
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+/* Monthly Comparison */
+.comparison-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+}
+
+.comparison-item {
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--background);
+}
+
+.comparison-item.current {
+    border-left: 4px solid var(--primary);
+}
+
+.comparison-item.previous {
+    border-left: 4px solid var(--border);
+}
+
+.comparison-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.comparison-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.comparison-change {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.comparison-change.positive {
+    color: var(--income);
+}
+
+.comparison-change.negative {
+    color: var(--expense);
+}
+
+/* Responsive Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dashboard Widgets */
+.widget {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.widget-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.widget-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.widget-content {
+    min-height: 100px;
+}
+
+/* Achievement Badges */
+.achievements {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.achievement-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: var(--radius);
+    text-align: center;
+    min-width: 100px;
+}
+
+.achievement-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    background: var(--primary);
+    color: white;
+}
+
+.achievement-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.achievement-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+}

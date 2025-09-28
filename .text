@@ -1,0 +1,21 @@
+money-manager/
+├── index.html (Dashboard)
+├── transactions.html
+├── reports.html
+├── upcoming.html
+├── fixed-expenses.html (নতুন পেজ)
+├── settings.html
+├── css/
+│   ├── style.css
+│   ├── dashboard.css
+│   └── responsive.css
+├── js/
+│   ├── app.js (কমন ফাংশন)
+│   ├── dashboard.js
+│   ├── transactions.js
+│   ├── reports.js
+│   ├── upcoming.js
+│   ├── fixed-expenses.js (নতুন)
+│   └── settings.js
+└── assets/
+    └── icons/

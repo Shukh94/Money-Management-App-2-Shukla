@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Money Manager - Upcoming Expenses</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">💰 Personal Money Manager</div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="nav-link">ড্যাশবোর্ড</a></li>
+                        <li><a href="transactions.html" class="nav-link">লেনদেন</a></li>
+                        <li><a href="reports.html" class="nav-link">রিপোর্ট</a></li>
+                        <li><a href="upcoming.html" class="nav-link active">আসন্ন খরচ</a></li>
+                        <li><a href="fixed-expenses.html" class="nav-link">ফিক্সড খরচ</a></li>
+                        <li><a href="settings.html" class="nav-link">সেটিংস</a></li>
+                    </ul>
+                </nav>
+                <div class="header-controls">
+                    <button class="language-toggle" id="languageToggle">EN</button>
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page active">
+            <h2 class="page-title" data-i18n="upcomingExpenseManagement">আসন্ন খরচ ব্যবস্থাপনা</h2>
+            
+            <!-- Upcoming Expenses Summary -->
+            <div class="summary-cards">
+                <div class="summary-card upcoming-total">
+                    <h3 data-i18n="totalUpcomingExpenses">মোট আসন্ন খরচ</h3>
+                    <div class="amount" id="totalUpcoming">৳ 0</div>
+                </div>
+                <div class="summary-card upcoming-pending">
+                    <h3 data-i18n="pendingUpcomingExpenses">বাকি আসন্ন খরচ</h3>
+                    <div class="amount" id="pendingUpcoming">৳ 0</div>
+                </div>
+                <div class="summary-card upcoming-paid">
+                    <h3 data-i18n="paidUpcomingExpenses">পরিশোধিত খরচ</h3>
+                    <div class="amount" id="paidUpcoming">৳ 0</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="addUpcomingExpense">আসন্ন খরচ যোগ করুন</h3>
+                <form id="upcomingForm">
+                    <div class="form-group">
+                        <label for="upcomingTitle" data-i18n="expenseDescription">খরচের বিবরণ</label>
+                        <input type="text" id="upcomingTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingAmount" data-i18n="amount">টাকার পরিমাণ</label>
+                        <input type="number" id="upcomingAmount" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingCategory" data-i18n="category">ক্যাটাগরি</label>
+                        <select id="upcomingCategory" required>
+                            <option value="rent" data-i18n="rent">বাড়ি ভাড়া</option>
+                            <option value="utilities" data-i18n="utilities">ইউটিলিটি বিল</option>
+                            <option value="loan" data-i18n="loan">লোন</option>
+                            <option value="insurance" data-i18n="insurance">বীমা</option>
+                            <option value="other" data-i18n="other">অন্যান্য</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingDueDate" data-i18n="dueDate">নির্ধারিত তারিখ</label>
+                        <input type="date" id="upcomingDueDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upcomingNotes" data-i18n="notesOptional">মন্তব্য (ঐচ্ছিক)</label>
+                        <textarea id="upcomingNotes" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" data-i18n="addExpense">খরচ যোগ করুন</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 data-i18n="upcomingExpenseList">আসন্ন খরচের তালিকা</h3>
+                <div class="filter-options">
+                    <select id="filterUpcomingStatus">
+                        <option value="all" data-i18n="all">সব</option>
+                        <option value="pending" data-i18n="pending">বাকি</option>
+                        <option value="paid" data-i18n="paid">পরিশোধিত</option>
+                    </select>
+                    <select id="filterUpcomingMonth">
+                        <option value="all" data-i18n="allMonths">সব মাস</option>
+                    </select>
+                </div>
+                <div id="upcomingList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/upcoming.js"></script>
+</body>
+</html>
