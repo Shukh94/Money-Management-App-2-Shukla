@@ -30,7 +30,9 @@ const translations = {
         'monthlyFixedExpenses': 'মাসিক ফিক্সড খরচ',
         'toggleActive': 'একটিভ/নিষ্ক্রিয় করুন',
         'markAsPaid': 'পরিশোধিত করুন',
-        'generateThisMonth': 'এই মাসের জন্য জেনারেট করুন'
+        'generateThisMonth': 'এই মাসের জন্য জেনারেট করুন',
+        'darkModeEnabled': 'ডার্ক মোড সক্রিয় করা হয়েছে',
+        'lightModeEnabled': 'লাইট মোড সক্রিয় করা হয়েছে'
     },
     'en': {
         // ... existing translations ...
@@ -49,7 +51,9 @@ const translations = {
         'monthlyFixedExpenses': 'Monthly Fixed Expenses',
         'toggleActive': 'Toggle Active/Inactive',
         'markAsPaid': 'Mark as Paid',
-        'generateThisMonth': 'Generate for This Month'
+        'generateThisMonth': 'Generate for This Month',
+        'darkModeEnabled': 'Dark mode enabled',
+        'lightModeEnabled': 'Light mode enabled'
     }
 };
 
@@ -130,16 +134,136 @@ function initializeCommon() {
     
     // Apply saved settings
     applySettings();
+    
+    // Initialize theme toggles for both mobile and desktop
+    initializeThemeToggles();
+    
+    // Initialize language toggles for both mobile and desktop
+    initializeLanguageToggles();
+}
+
+function initializeThemeToggles() {
+    // Mobile theme toggle
+    const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', toggleDarkMode);
+        updateThemeToggleButton(mobileThemeToggle);
+    }
+    
+    // Desktop theme toggle
+    const desktopThemeToggle = document.getElementById('desktopThemeToggle');
+    if (desktopThemeToggle) {
+        desktopThemeToggle.addEventListener('click', toggleDarkMode);
+        updateThemeToggleButton(desktopThemeToggle);
+    }
+}
+
+function initializeLanguageToggles() {
+    // Mobile language toggle
+    const mobileLanguageToggle = document.getElementById('mobileLanguageToggle');
+    if (mobileLanguageToggle) {
+        mobileLanguageToggle.addEventListener('click', toggleLanguage);
+        updateLanguageToggleButton(mobileLanguageToggle);
+    }
+    
+    // Desktop language toggle
+    const desktopLanguageToggle = document.getElementById('desktopLanguageToggle');
+    if (desktopLanguageToggle) {
+        desktopLanguageToggle.addEventListener('click', toggleLanguage);
+        updateLanguageToggleButton(desktopLanguageToggle);
+    }
+}
+
+function toggleDarkMode() {
+    window.appState.settings.darkMode = !window.appState.settings.darkMode;
+    saveSettings();
+    applySettings();
+    
+    // Update all theme toggle buttons
+    const mobileToggle = document.getElementById('mobileThemeToggle');
+    const desktopToggle = document.getElementById('desktopThemeToggle');
+    
+    if (mobileToggle) updateThemeToggleButton(mobileToggle);
+    if (desktopToggle) updateThemeToggleButton(desktopToggle);
+    
+    showNotification(
+        window.appState.settings.darkMode ? 
+        getTranslation('darkModeEnabled') : 
+        getTranslation('lightModeEnabled'),
+        'success'
+    );
+}
+
+function updateThemeToggleButton(button) {
+    if (window.appState.settings.darkMode) {
+        button.textContent = '☀️';
+        button.title = 'Light Mode';
+    } else {
+        button.textContent = '🌙';
+        button.title = 'Dark Mode';
+    }
+}
+
+function toggleLanguage() {
+    const currentLang = window.appState.settings.language;
+    window.appState.settings.language = currentLang === 'bn' ? 'en' : 'bn';
+    saveSettings();
+    applySettings();
+    
+    // Update all language toggle buttons
+    const mobileToggle = document.getElementById('mobileLanguageToggle');
+    const desktopToggle = document.getElementById('desktopLanguageToggle');
+    
+    if (mobileToggle) updateLanguageToggleButton(mobileToggle);
+    if (desktopToggle) updateLanguageToggleButton(desktopToggle);
+    
+    showNotification(
+        window.appState.settings.language === 'bn' ? 
+        'বাংলা ভাষা সক্রিয়' : 
+        'English language activated',
+        'success'
+    );
+}
+
+function updateLanguageToggleButton(button) {
+    if (window.appState.settings.language === 'bn') {
+        button.textContent = 'EN';
+        button.title = 'Switch to English';
+    } else {
+        button.textContent = 'BN';
+        button.title = 'বাংলায় পরিবর্তন করুন';
+    }
 }
 
 function applySettings() {
     // Apply dark mode
     if (window.appState.settings.darkMode) {
         document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
     }
     
     // Apply language
     applyLanguage(window.appState.settings.language);
+    
+    // Update all buttons to reflect current state
+    updateAllToggleButtons();
+}
+
+function updateAllToggleButtons() {
+    // Update theme buttons
+    const mobileTheme = document.getElementById('mobileThemeToggle');
+    const desktopTheme = document.getElementById('desktopThemeToggle');
+    
+    if (mobileTheme) updateThemeToggleButton(mobileTheme);
+    if (desktopTheme) updateThemeToggleButton(desktopTheme);
+    
+    // Update language buttons
+    const mobileLang = document.getElementById('mobileLanguageToggle');
+    const desktopLang = document.getElementById('desktopLanguageToggle');
+    
+    if (mobileLang) updateLanguageToggleButton(mobileLang);
+    if (desktopLang) updateLanguageToggleButton(desktopLang);
 }
 
 function applyLanguage(language) {

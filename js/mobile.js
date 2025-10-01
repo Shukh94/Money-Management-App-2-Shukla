@@ -38,6 +38,86 @@ function setupMobileEventListeners() {
 
     // Touch events for better mobile experience
     setupTouchEvents();
+    
+    // Mobile-specific button events
+    setupMobileButtonEvents();
+}
+
+function setupMobileButtonEvents() {
+    // Mobile add button
+    const mobileAddBtn = document.getElementById('mobileAddBtn');
+    if (mobileAddBtn) {
+        mobileAddBtn.addEventListener('click', function() {
+            // Scroll to form or show add modal
+            const form = document.getElementById('transactionForm');
+            if (form) {
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Mobile refresh button
+    const mobileRefreshBtn = document.getElementById('mobileRefreshBtn');
+    if (mobileRefreshBtn) {
+        mobileRefreshBtn.addEventListener('click', function() {
+            location.reload();
+        });
+    }
+    
+    // Mobile save button
+    const mobileSaveBtn = document.getElementById('mobileSaveBtn');
+    if (mobileSaveBtn) {
+        mobileSaveBtn.addEventListener('click', function() {
+            // Trigger settings save
+            const saveBtn = document.querySelector('#settingsForm button[type="submit"]');
+            if (saveBtn) {
+                saveBtn.click();
+            }
+        });
+    }
+}
+
+
+// Mobile-Specific Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if mobile
+    if (window.innerWidth <= 768) {
+        initializeMobile();
+        setupMobileEventListeners();
+        updateMobileNavigation();
+    }
+});
+
+function initializeMobile() {
+    // Only run on mobile devices
+    if (window.innerWidth > 768) return;
+    
+    console.log('Mobile interface initialized');
+    
+    // Add mobile page headers if they don't exist
+    addMobilePageHeaders();
+    
+    // Initialize mobile-specific features
+    initializeMobileFeatures();
+}
+
+function setupMobileEventListeners() {
+    // Only run on mobile devices
+    if (window.innerWidth > 768) return;
+
+    // FAB functionality
+    const fab = document.getElementById('fab');
+    if (fab) {
+        fab.addEventListener('click', function() {
+            handleFABClick();
+        });
+    }
+
+    // Mobile navigation active state
+    updateMobileNavigation();
+
+    // Touch events for better mobile experience
+    setupTouchEvents();
 }
 
 function updateMobileNavigation() {
@@ -222,3 +302,4 @@ window.addEventListener('load', function() {
         updateMobileNavigation();
     }
 });
+
