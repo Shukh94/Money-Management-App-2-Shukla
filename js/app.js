@@ -11,10 +11,64 @@ window.appState = {
     }
 };
 
-// Language translations
+// Complete Language translations
 const translations = {
     'bn': {
-        // ... existing translations ...
+        // Navigation
+        'dashboard': 'ড্যাশবোর্ড',
+        'transactions': 'লেনদেন',
+        'reports': 'রিপোর্ট',
+        'upcoming': 'আসন্ন',
+        'upcomingExpenses': 'আসন্ন খরচ',
+        'fixed': 'ফিক্সড',
+        'fixedExpenses': 'ফিক্সড খরচ',
+        'settings': 'সেটিংস',
+        
+        // Common
+        'add': 'যোগ করুন',
+        'edit': 'সম্পাদনা',
+        'delete': 'মুছুন',
+        'save': 'সংরক্ষণ',
+        'cancel': 'বাতিল',
+        'submit': 'জমা দিন',
+        'filter': 'ফিল্টার',
+        'search': 'খুঁজুন',
+        'total': 'মোট',
+        'amount': 'পরিমাণ',
+        'date': 'তারিখ',
+        'description': 'বিবরণ',
+        'category': 'ক্যাটাগরি',
+        'type': 'ধরন',
+        'income': 'আয়',
+        'expense': 'খরচ',
+        
+        // Dashboard
+        'totalBalance': 'মোট ব্যালেন্স',
+        'totalIncome': 'মোট আয়',
+        'totalExpense': 'মোট খরচ',
+        'recentTransactions': 'সাম্প্রতিক লেনদেন',
+        'noTransactions': 'কোন লেনদেন নেই',
+        
+        // Transactions
+        'addTransaction': 'লেনদেন যোগ করুন',
+        'transactionType': 'লেনদেনের ধরন',
+        'transactionDate': 'লেনদেনের তারিখ',
+        'transactionAmount': 'লেনদেনের পরিমাণ',
+        'transactionCategory': 'লেনদেনের ক্যাটাগরি',
+        'transactionDescription': 'লেনদেনের বিবরণ',
+        
+        // Categories
+        'food': 'খাবার',
+        'transport': 'যাতায়াত',
+        'shopping': 'কেনাকাটা',
+        'entertainment': 'বিনোদন',
+        'bills': 'বিল',
+        'healthcare': 'স্বাস্থ্য',
+        'education': 'শিক্ষা',
+        'salary': 'বেতন',
+        'other': 'অন্যান্য',
+        
+        // Fixed Expenses
         'fixedExpenseManagement': 'ফিক্সড খরচ ব্যবস্থাপনা',
         'totalFixedExpenses': 'মোট ফিক্সড খরচ',
         'activeFixedExpenses': 'একটিভ ফিক্সড খরচ',
@@ -31,11 +85,79 @@ const translations = {
         'toggleActive': 'একটিভ/নিষ্ক্রিয় করুন',
         'markAsPaid': 'পরিশোধিত করুন',
         'generateThisMonth': 'এই মাসের জন্য জেনারেট করুন',
+        
+        // Settings
+        'currencySettings': 'কারেন্সি সেটিংস',
+        'dateFormatSettings': 'তারিখ ফরম্যাট সেটিংস',
+        'languageSettings': 'ভাষা সেটিংস',
+        'darkModeSettings': 'ডার্ক মোড সেটিংস',
+        'selectCurrency': 'কারেন্সি নির্বাচন করুন',
+        'selectDateFormat': 'তারিখ ফরম্যাট নির্বাচন করুন',
+        'selectLanguage': 'ভাষা নির্বাচন করুন',
+        
+        // Notifications
         'darkModeEnabled': 'ডার্ক মোড সক্রিয় করা হয়েছে',
-        'lightModeEnabled': 'লাইট মোড সক্রিয় করা হয়েছে'
+        'lightModeEnabled': 'লাইট মোড সক্রিয় করা হয়েছে',
+        'settingsSaved': 'সেটিংস সংরক্ষণ করা হয়েছে',
+        'transactionAdded': 'লেনদেন যোগ করা হয়েছে',
+        'transactionDeleted': 'লেনদেন মুছে ফেলা হয়েছে'
     },
     'en': {
-        // ... existing translations ...
+        // Navigation
+        'dashboard': 'Dashboard',
+        'transactions': 'Transactions',
+        'reports': 'Reports',
+        'upcoming': 'Upcoming',
+        'upcomingExpenses': 'Upcoming Expenses',
+        'fixed': 'Fixed',
+        'fixedExpenses': 'Fixed Expenses',
+        'settings': 'Settings',
+        
+        // Common
+        'add': 'Add',
+        'edit': 'Edit',
+        'delete': 'Delete',
+        'save': 'Save',
+        'cancel': 'Cancel',
+        'submit': 'Submit',
+        'filter': 'Filter',
+        'search': 'Search',
+        'total': 'Total',
+        'amount': 'Amount',
+        'date': 'Date',
+        'description': 'Description',
+        'category': 'Category',
+        'type': 'Type',
+        'income': 'Income',
+        'expense': 'Expense',
+        
+        // Dashboard
+        'totalBalance': 'Total Balance',
+        'totalIncome': 'Total Income',
+        'totalExpense': 'Total Expense',
+        'recentTransactions': 'Recent Transactions',
+        'noTransactions': 'No Transactions',
+        
+        // Transactions
+        'addTransaction': 'Add Transaction',
+        'transactionType': 'Transaction Type',
+        'transactionDate': 'Transaction Date',
+        'transactionAmount': 'Transaction Amount',
+        'transactionCategory': 'Transaction Category',
+        'transactionDescription': 'Transaction Description',
+        
+        // Categories
+        'food': 'Food',
+        'transport': 'Transport',
+        'shopping': 'Shopping',
+        'entertainment': 'Entertainment',
+        'bills': 'Bills',
+        'healthcare': 'Healthcare',
+        'education': 'Education',
+        'salary': 'Salary',
+        'other': 'Other',
+        
+        // Fixed Expenses
         'fixedExpenseManagement': 'Fixed Expense Management',
         'totalFixedExpenses': 'Total Fixed Expenses',
         'activeFixedExpenses': 'Active Fixed Expenses',
@@ -52,8 +174,22 @@ const translations = {
         'toggleActive': 'Toggle Active/Inactive',
         'markAsPaid': 'Mark as Paid',
         'generateThisMonth': 'Generate for This Month',
+        
+        // Settings
+        'currencySettings': 'Currency Settings',
+        'dateFormatSettings': 'Date Format Settings',
+        'languageSettings': 'Language Settings',
+        'darkModeSettings': 'Dark Mode Settings',
+        'selectCurrency': 'Select Currency',
+        'selectDateFormat': 'Select Date Format',
+        'selectLanguage': 'Select Language',
+        
+        // Notifications
         'darkModeEnabled': 'Dark mode enabled',
-        'lightModeEnabled': 'Light mode enabled'
+        'lightModeEnabled': 'Light mode enabled',
+        'settingsSaved': 'Settings saved successfully',
+        'transactionAdded': 'Transaction added successfully',
+        'transactionDeleted': 'Transaction deleted successfully'
     }
 };
 
@@ -187,9 +323,7 @@ function toggleDarkMode() {
     if (desktopToggle) updateThemeToggleButton(desktopToggle);
     
     showNotification(
-        window.appState.settings.darkMode ? 
-        getTranslation('darkModeEnabled') : 
-        getTranslation('lightModeEnabled'),
+        getTranslation(window.appState.settings.darkMode ? 'darkModeEnabled' : 'lightModeEnabled'),
         'success'
     );
 }
@@ -217,6 +351,9 @@ function toggleLanguage() {
     if (mobileToggle) updateLanguageToggleButton(mobileToggle);
     if (desktopToggle) updateLanguageToggleButton(desktopToggle);
     
+    // Apply language to entire page without reload
+    applyLanguageToPage();
+    
     showNotification(
         window.appState.settings.language === 'bn' ? 
         'বাংলা ভাষা সক্রিয়' : 
@@ -243,8 +380,8 @@ function applySettings() {
         document.body.classList.remove('dark-mode');
     }
     
-    // Apply language
-    applyLanguage(window.appState.settings.language);
+    // Apply language to entire page
+    applyLanguageToPage();
     
     // Update all buttons to reflect current state
     updateAllToggleButtons();
@@ -266,7 +403,11 @@ function updateAllToggleButtons() {
     if (desktopLang) updateLanguageToggleButton(desktopLang);
 }
 
-function applyLanguage(language) {
+// New function to translate entire page
+function applyLanguageToPage() {
+    const language = window.appState.settings.language;
+    
+    // Translate elements with data-i18n attribute
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(element => {
         const key = element.getAttribute('data-i18n');
@@ -274,6 +415,127 @@ function applyLanguage(language) {
             element.textContent = translations[language][key];
         }
     });
+    
+    // Translate navigation items
+    translateNavigation();
+    
+    // Translate buttons
+    translateButtons();
+    
+    // Translate form elements
+    translateFormElements();
+    
+    // Translate placeholders
+    translatePlaceholders();
+    
+    // Update dynamic content if needed
+    updateDynamicContent();
+}
+
+function translateNavigation() {
+    const language = window.appState.settings.language;
+    
+    // Desktop navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        const text = link.textContent.trim();
+        const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], text);
+        if (translationKey && translations[language]?.[translationKey]) {
+            link.textContent = translations[language][translationKey];
+        }
+    });
+    
+    // Mobile navigation
+    const mobileNavLabels = document.querySelectorAll('.nav-label');
+    mobileNavLabels.forEach(label => {
+        const text = label.textContent.trim();
+        const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], text);
+        if (translationKey && translations[language]?.[translationKey]) {
+            label.textContent = translations[language][translationKey];
+        }
+    });
+}
+
+function translateButtons() {
+    const language = window.appState.settings.language;
+    const buttons = document.querySelectorAll('button');
+    
+    buttons.forEach(button => {
+        // Skip toggle buttons
+        if (button.classList.contains('language-toggle') || button.classList.contains('theme-toggle')) {
+            return;
+        }
+        
+        const text = button.textContent.trim();
+        if (text) {
+            const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], text);
+            if (translationKey && translations[language]?.[translationKey]) {
+                button.textContent = translations[language][translationKey];
+            }
+        }
+    });
+}
+
+function translateFormElements() {
+    const language = window.appState.settings.language;
+    
+    // Translate labels
+    const labels = document.querySelectorAll('label');
+    labels.forEach(label => {
+        const text = label.textContent.trim();
+        if (text) {
+            const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], text);
+            if (translationKey && translations[language]?.[translationKey]) {
+                label.textContent = translations[language][translationKey];
+            }
+        }
+    });
+    
+    // Translate options in select elements
+    const selectElements = document.querySelectorAll('select');
+    selectElements.forEach(select => {
+        Array.from(select.options).forEach(option => {
+            const text = option.textContent.trim();
+            if (text) {
+                const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], text);
+                if (translationKey && translations[language]?.[translationKey]) {
+                    option.textContent = translations[language][translationKey];
+                }
+            }
+        });
+    });
+}
+
+function translatePlaceholders() {
+    const language = window.appState.settings.language;
+    const inputs = document.querySelectorAll('input[placeholder], textarea[placeholder]');
+    
+    inputs.forEach(input => {
+        const placeholder = input.getAttribute('placeholder');
+        if (placeholder) {
+            const translationKey = getKeyByValue(translations[language === 'bn' ? 'en' : 'bn'], placeholder);
+            if (translationKey && translations[language]?.[translationKey]) {
+                input.setAttribute('placeholder', translations[language][translationKey]);
+            }
+        }
+    });
+}
+
+function updateDynamicContent() {
+    // This function can be extended to update dynamic content
+    // like transaction lists, charts, etc.
+    if (typeof updateTransactionsDisplay === 'function') {
+        updateTransactionsDisplay();
+    }
+    
+    if (typeof updateFixedExpensesDisplay === 'function') {
+        updateFixedExpensesDisplay();
+    }
+}
+
+// Helper function to find translation key by value
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
 }
 
 // Save functions
