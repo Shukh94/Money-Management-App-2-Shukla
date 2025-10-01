@@ -1,134 +1,160 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Money Manager - Fixed Expenses</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">💰 Personal Money Manager</div>
-                <nav>
-                    <ul>
-                        <li><a href="index.html" class="nav-link">ড্যাশবোর্ড</a></li>
-                        <li><a href="transactions.html" class="nav-link">লেনদেন</a></li>
-                        <li><a href="reports.html" class="nav-link">রিপোর্ট</a></li>
-                        <li><a href="upcoming.html" class="nav-link">আসন্ন খরচ</a></li>
-                        <li><a href="fixed-expenses.html" class="nav-link active">ফিক্সড খরচ</a></li>
-                        <li><a href="settings.html" class="nav-link">সেটিংস</a></li>
-                    </ul>
-                </nav>
-                <div class="header-controls">
-                    <button class="language-toggle" id="languageToggle">EN</button>
-                    <button class="theme-toggle" id="themeToggle">🌙</button>
-                </div>
-            </div>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">💰 Personal Money Manager</div>
+          <nav>
+            <ul>
+              <li><a href="index.html" class="nav-link">ড্যাশবোর্ড</a></li>
+              <li><a href="transactions.html" class="nav-link">লেনদেন</a></li>
+              <li><a href="reports.html" class="nav-link">রিপোর্ট</a></li>
+              <li><a href="upcoming.html" class="nav-link">আসন্ন খরচ</a></li>
+              <li>
+                <a href="fixed-expenses.html" class="nav-link active"
+                  >ফিক্সড খরচ</a
+                >
+              </li>
+              <li><a href="settings.html" class="nav-link">সেটিংস</a></li>
+            </ul>
+          </nav>
+          <div class="header-controls">
+            <button class="language-toggle" id="languageToggle">EN</button>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+          </div>
         </div>
+      </div>
     </header>
 
     <div class="container">
-        <div class="page active">
-            <h2 class="page-title" data-i18n="fixedExpenseManagement">ফিক্সড খরচ ব্যবস্থাপনা</h2>
-            
-            <!-- Fixed Expenses Summary -->
-            <div class="summary-cards">
-                <div class="summary-card fixed-total">
-                    <h3 data-i18n="totalFixedExpenses">মোট ফিক্সড খরচ</h3>
-                    <div class="amount" id="totalFixed">৳ 0</div>
-                </div>
-                <div class="summary-card fixed-active">
-                    <h3 data-i18n="activeFixedExpenses">একটিভ ফিক্সড খরচ</h3>
-                    <div class="amount" id="activeFixed">৳ 0</div>
-                </div>
-                <div class="summary-card fixed-inactive">
-                    <h3 data-i18n="inactiveFixedExpenses">নিষ্ক্রিয় ফিক্সড খরচ</h3>
-                    <div class="amount" id="inactiveFixed">৳ 0</div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3 data-i18n="addFixedExpense">ফিক্সড খরচ যোগ করুন</h3>
-                <form id="fixedExpenseForm">
-                    <div class="form-group">
-                        <label for="fixedTitle" data-i18n="expenseDescription">খরচের বিবরণ</label>
-                        <input type="text" id="fixedTitle" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedAmount" data-i18n="amount">টাকার পরিমাণ</label>
-                        <input type="number" id="fixedAmount" step="0.01" min="0" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedCategory" data-i18n="category">ক্যাটাগরি</label>
-                        <select id="fixedCategory" required>
-                            <option value="rent" data-i18n="rent">বাড়ি ভাড়া</option>
-                            <option value="utilities" data-i18n="utilities">ইউটিলিটি বিল</option>
-                            <option value="internet" data-i18n="internet">ইন্টারনেট</option>
-                            <option value="loan" data-i18n="loan">লোন</option>
-                            <option value="insurance" data-i18n="insurance">বীমা</option>
-                            <option value="subscription" data-i18n="subscription">সাবস্ক্রিপশন</option>
-                            <option value="other" data-i18n="other">অন্যান্য</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedDueDay" data-i18n="dueDay">পরিশোধের দিন</label>
-                        <select id="fixedDueDay" required>
-                            <option value="1">১ তারিখ</option>
-                            <option value="5">৫ তারিখ</option>
-                            <option value="10">১০ তারিখ</option>
-                            <option value="15">১৫ তারিখ</option>
-                            <option value="20">২০ তারিখ</option>
-                            <option value="25">২৫ তারিখ</option>
-                            <option value="28">২৮ তারিখ</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedStartDate" data-i18n="startDate">শুরুর তারিখ</label>
-                        <input type="date" id="fixedStartDate" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedEndDate" data-i18n="endDate">শেষ তারিখ (ঐচ্ছিক)</label>
-                        <input type="date" id="fixedEndDate">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fixedNotes" data-i18n="notesOptional">মন্তব্য (ঐচ্ছিক)</label>
-                        <textarea id="fixedNotes" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="toggle-label">
-                            <input type="checkbox" id="fixedActive" checked>
-                            <span data-i18n="active">একটিভ</span>
-                        </label>
-                    </div>
-                    
-                    <button type="submit" data-i18n="addFixedExpense">ফিক্সড খরচ যোগ করুন</button>
-                </form>
+      <div class="page active">
+        <h2 class="page-title" data-i18n="fixedExpenseManagement">
+          ফিক্সড খরচ ব্যবস্থাপনা
+        </h2>
+
+        <!-- Fixed Expenses Summary -->
+        <div class="summary-cards">
+          <div class="summary-card fixed-total">
+            <h3 data-i18n="totalFixedExpenses">মোট ফিক্সড খরচ</h3>
+            <div class="amount" id="totalFixed">৳ 0</div>
+          </div>
+          <div class="summary-card fixed-active">
+            <h3 data-i18n="activeFixedExpenses">একটিভ ফিক্সড খরচ</h3>
+            <div class="amount" id="activeFixed">৳ 0</div>
+          </div>
+          <div class="summary-card fixed-inactive">
+            <h3 data-i18n="inactiveFixedExpenses">নিষ্ক্রিয় ফিক্সড খরচ</h3>
+            <div class="amount" id="inactiveFixed">৳ 0</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="addFixedExpense">ফিক্সড খরচ যোগ করুন</h3>
+          <form id="fixedExpenseForm">
+            <div class="form-group">
+              <label for="fixedTitle" data-i18n="expenseDescription"
+                >খরচের বিবরণ</label
+              >
+              <input type="text" id="fixedTitle" required />
             </div>
 
-            <div class="card">
-                <h3 data-i18n="fixedExpenseList">ফিক্সড খরচের তালিকা</h3>
-                <div class="filter-options">
-                    <select id="filterFixedStatus">
-                        <option value="all" data-i18n="all">সব</option>
-                        <option value="active" data-i18n="active">একটিভ</option>
-                        <option value="inactive" data-i18n="inactive">নিষ্ক্রিয়</option>
-                    </select>
-                </div>
-                <div id="fixedExpenseList"></div>
+            <div class="form-group">
+              <label for="fixedAmount" data-i18n="amount">টাকার পরিমাণ</label>
+              <input
+                type="number"
+                id="fixedAmount"
+                step="0.01"
+                min="0"
+                required
+              />
             </div>
+
+            <div class="form-group">
+              <label for="fixedCategory" data-i18n="category">ক্যাটাগরি</label>
+              <select id="fixedCategory" required>
+                <option value="rent" data-i18n="rent">বাড়ি ভাড়া</option>
+                <option value="utilities" data-i18n="utilities">
+                  ইউটিলিটি বিল
+                </option>
+                <option value="internet" data-i18n="internet">ইন্টারনেট</option>
+                <option value="loan" data-i18n="loan">লোন</option>
+                <option value="insurance" data-i18n="insurance">বীমা</option>
+                <option value="subscription" data-i18n="subscription">
+                  সাবস্ক্রিপশন
+                </option>
+                <option value="other" data-i18n="other">অন্যান্য</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fixedDueDay" data-i18n="dueDay">পরিশোধের দিন</label>
+              <select id="fixedDueDay" required>
+                <option value="1">১ তারিখ</option>
+                <option value="5">৫ তারিখ</option>
+                <option value="10">১০ তারিখ</option>
+                <option value="15">১৫ তারিখ</option>
+                <option value="20">২০ তারিখ</option>
+                <option value="25">২৫ তারিখ</option>
+                <option value="28">২৮ তারিখ</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fixedStartDate" data-i18n="startDate"
+                >শুরুর তারিখ</label
+              >
+              <input type="date" id="fixedStartDate" required />
+            </div>
+
+            <div class="form-group">
+              <label for="fixedEndDate" data-i18n="endDate"
+                >শেষ তারিখ (ঐচ্ছিক)</label
+              >
+              <input type="date" id="fixedEndDate" />
+            </div>
+
+            <div class="form-group">
+              <label for="fixedNotes" data-i18n="notesOptional"
+                >মন্তব্য (ঐচ্ছিক)</label
+              >
+              <textarea id="fixedNotes" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="toggle-label">
+                <input type="checkbox" id="fixedActive" checked />
+                <span data-i18n="active">একটিভ</span>
+              </label>
+            </div>
+
+            <button type="submit" data-i18n="addFixedExpense">
+              ফিক্সড খরচ যোগ করুন
+            </button>
+          </form>
         </div>
+
+        <div class="card">
+          <h3 data-i18n="fixedExpenseList">ফিক্সড খরচের তালিকা</h3>
+          <div class="filter-options">
+            <select id="filterFixedStatus">
+              <option value="all" data-i18n="all">সব</option>
+              <option value="active" data-i18n="active">একটিভ</option>
+              <option value="inactive" data-i18n="inactive">নিষ্ক্রিয়</option>
+            </select>
+          </div>
+          <div id="fixedExpenseList"></div>
+        </div>
+      </div>
     </div>
 
     <script src="js/app.js"></script>
     <script src="js/fixed-expenses.js"></script>
-</body>
+  </body>
 </html>

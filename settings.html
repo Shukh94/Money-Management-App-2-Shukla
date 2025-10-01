@@ -1,91 +1,109 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Money Manager - Settings</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">💰 Personal Money Manager</div>
-                <nav>
-                    <ul>
-                        <li><a href="index.html" class="nav-link">ড্যাশবোর্ড</a></li>
-                        <li><a href="transactions.html" class="nav-link">লেনদেন</a></li>
-                        <li><a href="reports.html" class="nav-link">রিপোর্ট</a></li>
-                        <li><a href="upcoming.html" class="nav-link">আসন্ন খরচ</a></li>
-                        <li><a href="fixed-expenses.html" class="nav-link">ফিক্সড খরচ</a></li>
-                        <li><a href="settings.html" class="nav-link active">সেটিংস</a></li>
-                    </ul>
-                </nav>
-                <div class="header-controls">
-                    <button class="language-toggle" id="languageToggle">EN</button>
-                    <button class="theme-toggle" id="themeToggle">🌙</button>
-                </div>
-            </div>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">💰 Personal Money Manager</div>
+          <nav>
+            <ul>
+              <li><a href="index.html" class="nav-link">ড্যাশবোর্ড</a></li>
+              <li><a href="transactions.html" class="nav-link">লেনদেন</a></li>
+              <li><a href="reports.html" class="nav-link">রিপোর্ট</a></li>
+              <li><a href="upcoming.html" class="nav-link">আসন্ন খরচ</a></li>
+              <li>
+                <a href="fixed-expenses.html" class="nav-link">ফিক্সড খরচ</a>
+              </li>
+              <li>
+                <a href="settings.html" class="nav-link active">সেটিংস</a>
+              </li>
+            </ul>
+          </nav>
+          <div class="header-controls">
+            <button class="language-toggle" id="languageToggle">EN</button>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+          </div>
         </div>
+      </div>
     </header>
 
     <div class="container">
-        <div class="page active">
-            <h2 class="page-title" data-i18n="settings">সেটিংস</h2>
-            
-            <div class="card">
-                <h3 data-i18n="generalSettings">সাধারণ সেটিংস</h3>
-                
-                <div class="settings-option">
-                    <label for="currency" data-i18n="currency">মুদ্রা</label>
-                    <select id="currency">
-                        <option value="BDT">বাংলাদেশী টাকা (৳)</option>
-                        <option value="USD">ইউএস ডলার ($)</option>
-                        <option value="EUR">ইউরো (€)</option>
-                        <option value="GBP">ব্রিটিশ পাউন্ড (£)</option>
-                        <option value="INR">ভারতীয় রুপী (₹)</option>
-                    </select>
-                </div>
-                
-                <div class="settings-option">
-                    <label for="dateFormat" data-i18n="dateFormat">তারিখ ফরম্যাট</label>
-                    <select id="dateFormat">
-                        <option value="dd-mm-yyyy">DD-MM-YYYY</option>
-                        <option value="mm-dd-yyyy">MM-DD-YYYY</option>
-                        <option value="yyyy-mm-dd">YYYY-MM-DD</option>
-                    </select>
-                </div>
-                
-                <div class="settings-option">
-                    <label data-i18n="darkMode">ডার্ক মোড</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="darkMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                
-                <button id="saveSettings" data-i18n="saveSettings">সেটিংস সংরক্ষণ করুন</button>
-            </div>
+      <div class="page active">
+        <h2 class="page-title" data-i18n="settings">সেটিংস</h2>
 
-            <div class="card">
-                <h3 data-i18n="dataManagement">ডেটা ব্যবস্থাপনা</h3>
-                <button id="exportData" class="btn-success" data-i18n="exportAllData">সমস্ত ডেটা এক্সপোর্ট করুন</button>
-                <button id="importData" class="btn-success" data-i18n="importData">ডেটা ইম্পোর্ট করুন</button>
-                <button id="clearData" class="btn-danger" data-i18n="clearAllData">সমস্ত ডেটা মুছুন</button>
-            </div>
+        <div class="card">
+          <h3 data-i18n="generalSettings">সাধারণ সেটিংস</h3>
 
-            <div class="card">
-                <h3 data-i18n="appInfo">অ্যাপ্লিকেশন তথ্য</h3>
-                <div class="app-info">
-                    <p><strong data-i18n="version">ভার্সন:</strong> 1.0.0</p>
-                    <p><strong data-i18n="developer">ডেভেলপার:</strong> Personal Money Manager Team</p>
-                    <p><strong data-i18n="lastUpdate">সর্বশেষ আপডেট:</strong> <span id="lastUpdateDate">২০২৪-০১-০১</span></p>
-                </div>
-            </div>
+          <div class="settings-option">
+            <label for="currency" data-i18n="currency">মুদ্রা</label>
+            <select id="currency">
+              <option value="BDT">বাংলাদেশী টাকা (৳)</option>
+              <option value="USD">ইউএস ডলার ($)</option>
+              <option value="EUR">ইউরো (€)</option>
+              <option value="GBP">ব্রিটিশ পাউন্ড (£)</option>
+              <option value="INR">ভারতীয় রুপী (₹)</option>
+            </select>
+          </div>
+
+          <div class="settings-option">
+            <label for="dateFormat" data-i18n="dateFormat">তারিখ ফরম্যাট</label>
+            <select id="dateFormat">
+              <option value="dd-mm-yyyy">DD-MM-YYYY</option>
+              <option value="mm-dd-yyyy">MM-DD-YYYY</option>
+              <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+            </select>
+          </div>
+
+          <div class="settings-option">
+            <label data-i18n="darkMode">ডার্ক মোড</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="darkMode" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <button id="saveSettings" data-i18n="saveSettings">
+            সেটিংস সংরক্ষণ করুন
+          </button>
         </div>
+
+        <div class="card">
+          <h3 data-i18n="dataManagement">ডেটা ব্যবস্থাপনা</h3>
+          <button id="exportData" class="btn-success" data-i18n="exportAllData">
+            সমস্ত ডেটা এক্সপোর্ট করুন
+          </button>
+          <button id="importData" class="btn-success" data-i18n="importData">
+            ডেটা ইম্পোর্ট করুন
+          </button>
+          <button id="clearData" class="btn-danger" data-i18n="clearAllData">
+            সমস্ত ডেটা মুছুন
+          </button>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="appInfo">অ্যাপ্লিকেশন তথ্য</h3>
+          <div class="app-info">
+            <p><strong data-i18n="version">ভার্সন:</strong> 1.0.0</p>
+            <p>
+              <strong data-i18n="developer">ডেভেলপার:</strong> Personal Money
+              Manager Team
+            </p>
+            <p>
+              <strong data-i18n="lastUpdate">সর্বশেষ আপডেট:</strong>
+              <span id="lastUpdateDate">২০২৪-০১-০১</span>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="js/app.js"></script>
     <script src="js/settings.js"></script>
-</body>
+  </body>
 </html>
