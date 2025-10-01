@@ -5,8 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Money Manager - Settings</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="css/mobile.css"
+      media="screen and (max-width: 768px)"
+    />
   </head>
   <body>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">ড্যাশবোর্ড</span>
+      </a>
+      <a href="transactions.html" class="mobile-nav-item">
+        <span class="nav-icon">💳</span>
+        <span class="nav-label">লেনদেন</span>
+      </a>
+      <a href="reports.html" class="mobile-nav-item">
+        <span class="nav-icon">📈</span>
+        <span class="nav-label">রিপোর্ট</span>
+      </a>
+      <a href="upcoming.html" class="mobile-nav-item">
+        <span class="nav-icon">⏰</span>
+        <span class="nav-label">আসন্ন</span>
+      </a>
+      <a href="fixed-expenses.html" class="mobile-nav-item">
+        <span class="nav-icon">🔒</span>
+        <span class="nav-label">ফিক্সড</span>
+      </a>
+      <a href="settings.html" class="mobile-nav-item active">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">সেটিংস</span>
+      </a>
+    </nav>
+
+    <!-- Desktop Header - Original -->
     <header>
       <div class="container">
         <div class="header-content">
@@ -34,14 +68,14 @@
     </header>
 
     <div class="container">
-      <div class="page active">
-        <h2 class="page-title" data-i18n="settings">সেটিংস</h2>
+      <div id="settings" class="page active">
+        <h2 class="page-title">সেটিংস</h2>
 
         <div class="card">
-          <h3 data-i18n="generalSettings">সাধারণ সেটিংস</h3>
+          <h3>সাধারণ সেটিংস</h3>
 
           <div class="settings-option">
-            <label for="currency" data-i18n="currency">মুদ্রা</label>
+            <label for="currency">মুদ্রা</label>
             <select id="currency">
               <option value="BDT">বাংলাদেশী টাকা (৳)</option>
               <option value="USD">ইউএস ডলার ($)</option>
@@ -52,7 +86,7 @@
           </div>
 
           <div class="settings-option">
-            <label for="dateFormat" data-i18n="dateFormat">তারিখ ফরম্যাট</label>
+            <label for="dateFormat">তারিখ ফরম্যাট</label>
             <select id="dateFormat">
               <option value="dd-mm-yyyy">DD-MM-YYYY</option>
               <option value="mm-dd-yyyy">MM-DD-YYYY</option>
@@ -61,41 +95,34 @@
           </div>
 
           <div class="settings-option">
-            <label data-i18n="darkMode">ডার্ক মোড</label>
+            <label>ডার্ক মোড</label>
             <label class="toggle-switch">
               <input type="checkbox" id="darkMode" />
               <span class="slider"></span>
             </label>
           </div>
 
-          <button id="saveSettings" data-i18n="saveSettings">
-            সেটিংস সংরক্ষণ করুন
-          </button>
+          <button id="saveSettings">সেটিংস সংরক্ষণ করুন</button>
         </div>
 
         <div class="card">
-          <h3 data-i18n="dataManagement">ডেটা ব্যবস্থাপনা</h3>
-          <button id="exportData" class="btn-success" data-i18n="exportAllData">
+          <h3>ডেটা ব্যবস্থাপনা</h3>
+          <button id="exportData" class="btn-success">
             সমস্ত ডেটা এক্সপোর্ট করুন
           </button>
-          <button id="importData" class="btn-success" data-i18n="importData">
+          <button id="importData" class="btn-success">
             ডেটা ইম্পোর্ট করুন
           </button>
-          <button id="clearData" class="btn-danger" data-i18n="clearAllData">
-            সমস্ত ডেটা মুছুন
-          </button>
+          <button id="clearData" class="btn-danger">সমস্ত ডেটা মুছুন</button>
         </div>
 
         <div class="card">
-          <h3 data-i18n="appInfo">অ্যাপ্লিকেশন তথ্য</h3>
+          <h3>অ্যাপ্লিকেশন তথ্য</h3>
           <div class="app-info">
-            <p><strong data-i18n="version">ভার্সন:</strong> 1.0.0</p>
+            <p><strong>ভার্সন:</strong> 1.0.0</p>
+            <p><strong>ডেভেলপার:</strong> Personal Money Manager Team</p>
             <p>
-              <strong data-i18n="developer">ডেভেলপার:</strong> Personal Money
-              Manager Team
-            </p>
-            <p>
-              <strong data-i18n="lastUpdate">সর্বশেষ আপডেট:</strong>
+              <strong>সর্বশেষ আপডেট:</strong>
               <span id="lastUpdateDate">২০২৪-০১-০১</span>
             </p>
           </div>
@@ -103,7 +130,13 @@
       </div>
     </div>
 
+    <!-- Floating Action Button for Mobile -->
+    <button class="fab" id="fab">
+      <span class="fab-icon">💾</span>
+    </button>
+
     <script src="js/app.js"></script>
     <script src="js/settings.js"></script>
+    <script src="js/mobile.js"></script>
   </body>
 </html>

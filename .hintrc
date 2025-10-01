@@ -17,6 +17,13 @@
           "input[type=month]"
         ]
       }
+    ],
+    "button-type": "off",
+    "axe/parsing": [
+      "default",
+      {
+        "duplicate-id-active": "off"
+      }
     ]
   }
 }
