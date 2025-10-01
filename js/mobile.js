@@ -1,4 +1,6 @@
 // Mobile-Specific Functionality
+let currentFabMenu = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check if mobile
     if (window.innerWidth <= 768) {
@@ -6,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setupMobileEventListeners();
         updateMobileNavigation();
     }
+    
+    // সব ডিভাইসের জন্য FAB সেটআপ করুন (ডেস্কটপ এবং মোবাইল উভয়তে)
+    setupFABForAllDevices();
+    setupPageChangeListener();
 });
 
 function initializeMobile() {
@@ -24,14 +30,6 @@ function initializeMobile() {
 function setupMobileEventListeners() {
     // Only run on mobile devices
     if (window.innerWidth > 768) return;
-
-    // FAB functionality
-    const fab = document.getElementById('fab');
-    if (fab) {
-        fab.addEventListener('click', function() {
-            handleFABClick();
-        });
-    }
 
     // Mobile navigation active state
     updateMobileNavigation();
@@ -69,55 +67,12 @@ function setupMobileButtonEvents() {
     if (mobileSaveBtn) {
         mobileSaveBtn.addEventListener('click', function() {
             // Trigger settings save
-            const saveBtn = document.querySelector('#settingsForm button[type="submit"]');
+            const saveBtn = document.getElementById('saveSettings');
             if (saveBtn) {
                 saveBtn.click();
             }
         });
     }
-}
-
-
-// Mobile-Specific Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if mobile
-    if (window.innerWidth <= 768) {
-        initializeMobile();
-        setupMobileEventListeners();
-        updateMobileNavigation();
-    }
-});
-
-function initializeMobile() {
-    // Only run on mobile devices
-    if (window.innerWidth > 768) return;
-    
-    console.log('Mobile interface initialized');
-    
-    // Add mobile page headers if they don't exist
-    addMobilePageHeaders();
-    
-    // Initialize mobile-specific features
-    initializeMobileFeatures();
-}
-
-function setupMobileEventListeners() {
-    // Only run on mobile devices
-    if (window.innerWidth > 768) return;
-
-    // FAB functionality
-    const fab = document.getElementById('fab');
-    if (fab) {
-        fab.addEventListener('click', function() {
-            handleFABClick();
-        });
-    }
-
-    // Mobile navigation active state
-    updateMobileNavigation();
-
-    // Touch events for better mobile experience
-    setupTouchEvents();
 }
 
 function updateMobileNavigation() {
@@ -168,44 +123,349 @@ function addMobilePageHeaders() {
         const container = document.querySelector('.container');
         const page = document.querySelector('.page');
         container.insertBefore(pageHeader, page);
+        
+        // Mobile save button event listener যোগ করুন
+        if (currentPage === 'settings.html') {
+            const mobileSaveBtn = document.getElementById('mobileSaveBtn');
+            if (mobileSaveBtn) {
+                mobileSaveBtn.addEventListener('click', function() {
+                    const saveBtn = document.getElementById('saveSettings');
+                    if (saveBtn) {
+                        saveBtn.click();
+                    }
+                });
+            }
+        }
     }
 }
 
-function handleFABClick() {
+// সব ডিভাইসের জন্য FAB সেটআপ
+function setupFABForAllDevices() {
+    const fab = document.getElementById('fab');
+    if (!fab) {
+        console.log('FAB button not found');
+        return;
+    }
+
+    // FAB কে সবসময় দেখানোর জন্য স্টাইল প্রয়োগ
+    fab.style.display = 'flex';
+    
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
+    console.log('Setting up FAB for page:', currentPage);
+    
+    // পেজ অনুযায়ী FAB কাস্টমাইজ করুন
     switch(currentPage) {
         case 'index.html':
-            window.location.href = 'transactions.html';
+            setupFABForDashboard();
             break;
         case 'transactions.html':
-            // Scroll to form and focus on first input
-            const form = document.getElementById('transactionForm');
-            if (form) {
-                form.scrollIntoView({ behavior: 'smooth' });
-                const firstInput = form.querySelector('input, select, textarea');
-                if (firstInput) firstInput.focus();
-            }
+            setupFABForTransactions();
             break;
         case 'upcoming.html':
-            const upcomingForm = document.getElementById('upcomingForm');
-            if (upcomingForm) {
-                upcomingForm.scrollIntoView({ behavior: 'smooth' });
-                const firstInput = upcomingForm.querySelector('input, select, textarea');
-                if (firstInput) firstInput.focus();
-            }
+            setupFABForUpcoming();
             break;
         case 'fixed-expenses.html':
-            const fixedForm = document.getElementById('fixedExpenseForm');
-            if (fixedForm) {
-                fixedForm.scrollIntoView({ behavior: 'smooth' });
-                const firstInput = fixedForm.querySelector('input, select, textarea');
-                if (firstInput) firstInput.focus();
-            }
+            setupFABForFixedExpenses();
+            break;
+        case 'settings.html':
+            setupFABForSettings();
             break;
         default:
-            window.location.href = 'transactions.html';
+            setupFABForDefault();
     }
+}
+
+function setupFABForDashboard() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'দ্রুত লেনদেন যোগ করুন');
+    fabIcon.textContent = '+';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    const newFabIcon = newFab.querySelector('.fab-icon');
+    
+    newFab.addEventListener('click', function() {
+        if (currentFabMenu) {
+            // Menu থাকলে close করুন
+            closeFabMenu();
+            newFabIcon.style.transform = 'rotate(0deg)';
+        } else {
+            // Menu না থাকলে show করুন
+            showQuickActionMenu();
+            newFabIcon.style.transform = 'rotate(45deg)';
+        }
+    });
+}
+
+function showQuickActionMenu() {
+    // যদি আগে থেকে menu থাকে তবে remove করুন
+    if (currentFabMenu) {
+        closeFabMenu();
+        return;
+    }
+
+    // Quick action menu create করুন
+    const fabMenu = document.createElement('div');
+    fabMenu.className = 'fab-menu';
+    fabMenu.innerHTML = `
+        <div class="fab-menu-item" data-action="add-income">
+            <span class="fab-menu-icon">💰</span>
+            <span class="fab-menu-label">আয় যোগ করুন</span>
+        </div>
+        <div class="fab-menu-item" data-action="add-expense">
+            <span class="fab-menu-icon">💸</span>
+            <span class="fab-menu-label">খরচ যোগ করুন</span>
+        </div>
+        <div class="fab-menu-item" data-action="add-upcoming">
+            <span class="fab-menu-icon">⏰</span>
+            <span class="fab-menu-label">আসন্ন খরচ যোগ করুন</span>
+        </div>
+        <div class="fab-menu-item" data-action="add-fixed">
+            <span class="fab-menu-icon">🔒</span>
+            <span class="fab-menu-label">ফিক্সড খরচ যোগ করুন</span>
+        </div>
+    `;
+
+    // Menu এর event listeners যোগ করুন
+    fabMenu.addEventListener('click', function menuItemClick(e) {
+        const menuItem = e.target.closest('.fab-menu-item');
+        if (menuItem) {
+            const action = menuItem.getAttribute('data-action');
+            handleQuickAction(action);
+            closeFabMenu();
+        }
+    });
+
+    // Menu কে body তে append করুন
+    document.body.appendChild(fabMenu);
+    currentFabMenu = fabMenu;
+
+    // Menu এর position set করুন
+    const fab = document.getElementById('fab');
+    const fabRect = fab.getBoundingClientRect();
+    fabMenu.style.bottom = (window.innerHeight - fabRect.top + 10) + 'px';
+    fabMenu.style.right = (window.innerWidth - fabRect.right) + 'px';
+
+    // Background এ click করলে menu close হবে
+    setTimeout(() => {
+        document.addEventListener('click', closeFabMenuOnClick, true);
+    }, 100);
+}
+
+function closeFabMenu() {
+    if (currentFabMenu) {
+        currentFabMenu.remove();
+        currentFabMenu = null;
+        document.removeEventListener('click', closeFabMenuOnClick, true);
+        
+        // FAB icon reset করুন
+        const fabIcon = document.querySelector('#fab .fab-icon');
+        if (fabIcon) {
+            fabIcon.style.transform = 'rotate(0deg)';
+        }
+    }
+}
+
+function closeFabMenuOnClick(e) {
+    const fab = document.getElementById('fab');
+    if (currentFabMenu && !fab.contains(e.target) && !currentFabMenu.contains(e.target)) {
+        closeFabMenu();
+    }
+}
+
+function handleQuickAction(action) {
+    // Menu close করুন
+    closeFabMenu();
+    
+    // Action handle করুন
+    switch(action) {
+        case 'add-income':
+            // Transactions পেজে নিয়ে যাবে এবং income type সেট করবে
+            if (window.location.pathname.includes('transactions.html')) {
+                // যদি ইতিমধ্যে transactions পেজে থাকে
+                showTransactionForm('income');
+            } else {
+                window.location.href = 'transactions.html?type=income';
+            }
+            break;
+        case 'add-expense':
+            if (window.location.pathname.includes('transactions.html')) {
+                showTransactionForm('expense');
+            } else {
+                window.location.href = 'transactions.html?type=expense';
+            }
+            break;
+        case 'add-upcoming':
+            if (window.location.pathname.includes('upcoming.html')) {
+                showUpcomingForm();
+            } else {
+                window.location.href = 'upcoming.html';
+            }
+            break;
+        case 'add-fixed':
+            if (window.location.pathname.includes('fixed-expenses.html')) {
+                showFixedExpenseForm();
+            } else {
+                window.location.href = 'fixed-expenses.html';
+            }
+            break;
+    }
+}
+
+// Transactions পেজে ফর্ম দেখানোর ফাংশন
+function showTransactionForm(type) {
+    const form = document.getElementById('transactionForm');
+    if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+        
+        // Type সেট করুন
+        const typeSelect = document.getElementById('type');
+        if (typeSelect) {
+            typeSelect.value = type;
+        }
+        
+        // প্রথম input focus করুন
+        const firstInput = form.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
+    }
+}
+
+// Upcoming পেজে ফর্ম দেখানোর ফাংশন
+function showUpcomingForm() {
+    const form = document.getElementById('upcomingForm');
+    if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+        const firstInput = form.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
+    }
+}
+
+// Fixed Expenses পেজে ফর্ম দেখানোর ফাংশন
+function showFixedExpenseForm() {
+    const form = document.getElementById('fixedExpenseForm');
+    if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+        const firstInput = form.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
+    }
+}
+
+function setupFABForTransactions() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'নতুন লেনদেন যোগ করুন');
+    fabIcon.textContent = '+';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    
+    newFab.addEventListener('click', function() {
+        const form = document.getElementById('transactionForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+            const firstInput = form.querySelector('input, select, textarea');
+            if (firstInput) firstInput.focus();
+        }
+    });
+}
+
+function setupFABForUpcoming() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'নতুন আসন্ন খরচ যোগ করুন');
+    fabIcon.textContent = '+';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    
+    newFab.addEventListener('click', function() {
+        const form = document.getElementById('upcomingForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+            const firstInput = form.querySelector('input, select, textarea');
+            if (firstInput) firstInput.focus();
+        }
+    });
+}
+
+function setupFABForFixedExpenses() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'নতুন ফিক্সড খরচ যোগ করুন');
+    fabIcon.textContent = '+';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    
+    newFab.addEventListener('click', function() {
+        const form = document.getElementById('fixedExpenseForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+            const firstInput = form.querySelector('input, select, textarea');
+            if (firstInput) firstInput.focus();
+        }
+    });
+}
+
+function setupFABForSettings() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'সেটিংস সংরক্ষণ করুন');
+    fabIcon.textContent = '💾';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    
+    newFab.addEventListener('click', function() {
+        const saveBtn = document.getElementById('saveSettings');
+        if (saveBtn) {
+            // এনিমেশন যোগ করুন
+            newFab.classList.add('fab-saving');
+            saveBtn.click();
+            
+            // 1 সেকেন্ড পর এনিমেশন রিমুভ করুন
+            setTimeout(() => {
+                newFab.classList.remove('fab-saving');
+            }, 1000);
+        }
+    });
+}
+
+function setupFABForDefault() {
+    const fab = document.getElementById('fab');
+    const fabIcon = fab.querySelector('.fab-icon');
+    
+    fab.setAttribute('title', 'লেনদেন পেজে যান');
+    fabIcon.textContent = '+';
+    
+    // Remove any existing event listeners
+    fab.replaceWith(fab.cloneNode(true));
+    const newFab = document.getElementById('fab');
+    
+    newFab.addEventListener('click', function() {
+        window.location.href = 'transactions.html';
+    });
+}
+
+function setupPageChangeListener() {
+    // Navigation links এ click করলে menu close করুন
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('a') && !e.target.closest('.fab-menu')) {
+            closeFabMenu();
+        }
+    });
 }
 
 function initializeMobileFeatures() {
@@ -285,6 +545,8 @@ function handleKeyboardEvents() {
 
 // Handle mobile resize
 window.addEventListener('resize', function() {
+    closeFabMenu();
+    
     if (window.innerWidth <= 768) {
         initializeMobile();
     } else {
@@ -303,3 +565,7 @@ window.addEventListener('load', function() {
     }
 });
 
+// Page unload হলে menu clean up করুন
+window.addEventListener('beforeunload', function() {
+    closeFabMenu();
+});

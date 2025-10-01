@@ -554,3 +554,4 @@ function saveFixedExpenses() {
 function saveSettings() {
     localStorage.setItem('settings', JSON.stringify(window.appState.settings));
 }
+
