@@ -1,0 +1,161 @@
+/* Mobile-First Styles - Only applies below 768px */
+@media (max-width: 768px) {
+  /* Hide desktop header on mobile */
+  header {
+    display: none !important;
+  }
+
+  /* Show mobile navigation */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    opacity: 0.6;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 60px;
+  }
+
+  .mobile-nav-item.active {
+    opacity: 1;
+    color: var(--primary);
+    background: rgba(67, 97, 238, 0.1);
+  }
+
+  .nav-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .nav-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  /* Adjust container padding for mobile */
+  .container {
+    padding-bottom: 70px;
+  }
+
+  /* Mobile responsive adjustments */
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .summary-card {
+    padding: 1rem;
+  }
+
+  .summary-card .amount {
+    font-size: 1.3rem;
+  }
+
+  .card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .filter-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-options select,
+  .filter-options input {
+    min-width: 100%;
+  }
+
+  /* Transaction items mobile optimization */
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+
+  .transaction-info {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .transaction-amount {
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+  }
+
+  .transaction-actions {
+    align-self: flex-end;
+  }
+
+  /* Form adjustments for mobile */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 0.6rem;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  /* Floating Action Button */
+  .fab {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(67, 97, 238, 0.4);
+  }
+}
+
+/* Desktop styles - hide mobile elements */
+@media (min-width: 769px) {
+  .mobile-nav {
+    display: none;
+  }
+
+  .fab {
+    display: none;
+  }
+}
