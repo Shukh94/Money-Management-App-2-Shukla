@@ -1,4 +1,4 @@
-// Settings Management
+// Settings Management - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
     initializeSettings();
     setupSettingsEventListeners();
@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeSettings() {
     loadSettingsForm();
+    
+    // Settings page specific theme toggle setup
+    setupSettingsThemeToggle();
 }
 
 function setupSettingsEventListeners() {
@@ -21,34 +24,111 @@ function setupSettingsEventListeners() {
     // Clear Data
     document.getElementById('clearData').addEventListener('click', clearAllData);
 
-    // Theme Toggle
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        window.appState.settings.darkMode = document.body.classList.contains('dark-mode');
-        saveSettings();
-    });
+    // Settings Page Specific Theme Toggle
+    const settingsThemeToggle = document.getElementById('darkMode');
+    if (settingsThemeToggle) {
+        settingsThemeToggle.addEventListener('change', function() {
+            const isDarkMode = this.checked;
+            window.appState.settings.darkMode = isDarkMode;
+            
+            // Apply theme immediately
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            
+            // Save settings
+            saveSettings();
+            
+            // Update all theme toggle buttons in the app
+            updateAllThemeToggleButtons();
+            
+            showNotification(
+                window.appState.settings.language === 'bn' ? 
+                (isDarkMode ? 'ডার্ক মোড সক্রিয় করা হয়েছে' : 'লাইট মোড সক্রিয় করা হয়েছে') : 
+                (isDarkMode ? 'Dark mode enabled' : 'Light mode enabled'), 
+                'success'
+            );
+        });
+    }
 
-    // Language Toggle
-    document.getElementById('languageToggle').addEventListener('click', function() {
-        const newLanguage = window.appState.settings.language === 'bn' ? 'en' : 'bn';
-        window.appState.settings.language = newLanguage;
-        saveSettings();
-        applyLanguage(newLanguage);
-        this.textContent = newLanguage === 'bn' ? 'EN' : 'BN';
-        loadSettingsForm();
-    });
+    // Language Toggle - Settings page specific
+    const settingsLanguageToggle = document.getElementById('languageToggle');
+    if (settingsLanguageToggle) {
+        settingsLanguageToggle.addEventListener('click', function() {
+            const newLanguage = window.appState.settings.language === 'bn' ? 'en' : 'bn';
+            window.appState.settings.language = newLanguage;
+            saveSettings();
+            applyLanguage(newLanguage);
+            this.textContent = newLanguage === 'bn' ? 'EN' : 'BN';
+            loadSettingsForm();
+            
+            showNotification(
+                newLanguage === 'bn' ? 'বাংলা ভাষা সক্রিয়' : 'English language activated',
+                'success'
+            );
+        });
+    }
+}
+
+function setupSettingsThemeToggle() {
+    // Settings page এর জন্য আলাদা theme toggle setup
+    const darkModeToggle = document.getElementById('darkMode');
+    if (darkModeToggle) {
+        // Current state load করুন
+        darkModeToggle.checked = window.appState.settings.darkMode;
+        
+        // Initial state apply করুন
+        if (window.appState.settings.darkMode) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    }
 }
 
 function loadSettingsForm() {
-    document.getElementById('currency').value = window.appState.settings.currency;
-    document.getElementById('dateFormat').value = window.appState.settings.dateFormat;
-    document.getElementById('darkMode').checked = window.appState.settings.darkMode;
+    // Currency
+    const currencySelect = document.getElementById('currency');
+    if (currencySelect) {
+        currencySelect.value = window.appState.settings.currency;
+    }
+    
+    // Date Format
+    const dateFormatSelect = document.getElementById('dateFormat');
+    if (dateFormatSelect) {
+        dateFormatSelect.value = window.appState.settings.dateFormat;
+    }
+    
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById('darkMode');
+    if (darkModeToggle) {
+        darkModeToggle.checked = window.appState.settings.darkMode;
+    }
+    
+    // Language Toggle Button Text
+    const languageToggle = document.getElementById('languageToggle');
+    if (languageToggle) {
+        languageToggle.textContent = window.appState.settings.language === 'bn' ? 'EN' : 'BN';
+    }
 }
 
 function saveSettingsForm() {
-    window.appState.settings.currency = document.getElementById('currency').value;
-    window.appState.settings.dateFormat = document.getElementById('dateFormat').value;
-    window.appState.settings.darkMode = document.getElementById('darkMode').checked;
+    // Currency
+    const currencySelect = document.getElementById('currency');
+    if (currencySelect) {
+        window.appState.settings.currency = currencySelect.value;
+    }
+    
+    // Date Format
+    const dateFormatSelect = document.getElementById('dateFormat');
+    if (dateFormatSelect) {
+        window.appState.settings.dateFormat = dateFormatSelect.value;
+    }
+    
+    // Dark Mode - settings form থেকে নেওয়া হচ্ছে না কারণ real-time update হয়
+    // window.appState.settings.darkMode already updated via toggle
     
     saveSettings();
     
@@ -60,6 +140,34 @@ function saveSettingsForm() {
     );
 }
 
+// Helper function to update all theme toggle buttons in the app
+function updateAllThemeToggleButtons() {
+    // Mobile theme toggle
+    const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+    if (mobileThemeToggle) {
+        if (window.appState.settings.darkMode) {
+            mobileThemeToggle.textContent = '☀️';
+            mobileThemeToggle.title = 'Light Mode';
+        } else {
+            mobileThemeToggle.textContent = '🌙';
+            mobileThemeToggle.title = 'Dark Mode';
+        }
+    }
+    
+    // Desktop theme toggle
+    const desktopThemeToggle = document.getElementById('desktopThemeToggle');
+    if (desktopThemeToggle) {
+        if (window.appState.settings.darkMode) {
+            desktopThemeToggle.textContent = '☀️';
+            desktopThemeToggle.title = 'Light Mode';
+        } else {
+            desktopThemeToggle.textContent = '🌙';
+            desktopThemeToggle.title = 'Dark Mode';
+        }
+    }
+}
+
+// বাকি functions (exportAllData, importData, clearAllData) একই থাকবে
 function exportAllData() {
     const data = {
         transactions: window.appState.transactions,
@@ -106,17 +214,17 @@ function importData() {
                     if (data.transactions) window.appState.transactions = data.transactions;
                     if (data.upcomingExpenses) window.appState.upcomingExpenses = data.upcomingExpenses;
                     if (data.fixedExpenses) window.appState.fixedExpenses = data.fixedExpenses;
-                    if (data.settings) window.appState.settings = data.settings;
+                    if (data.settings) {
+                        window.appState.settings = data.settings;
+                        // Settings reload করুন
+                        loadSettingsForm();
+                        applySettings();
+                    }
                     
                     saveTransactions();
                     saveUpcomingExpenses();
                     saveFixedExpenses();
                     saveSettings();
-                    
-                    loadSettingsForm();
-                    applyLanguage(window.appState.settings.language);
-                    document.getElementById('languageToggle').textContent = 
-                        window.appState.settings.language === 'bn' ? 'EN' : 'BN';
                     
                     showNotification(
                         window.appState.settings.language === 'bn' ? 
@@ -158,4 +266,20 @@ function clearAllData() {
             'success'
         );
     }
+}
+
+// Translation helper function
+function getTranslation(key) {
+    const translations = {
+        'bn': {
+            'confirmImport': 'আপনি কি নিশ্চিত যে আপনি ডেটা ইম্পোর্ট করতে চান? বর্তমান ডেটা প্রতিস্থাপিত হবে।',
+            'confirmClear': 'আপনি কি নিশ্চিত যে আপনি সমস্ত ডেটা মুছতে চান? এই কাজটি পূর্বাবস্থায় ফিরিয়ে নেওয়া যাবে না।'
+        },
+        'en': {
+            'confirmImport': 'Are you sure you want to import data? Current data will be replaced.',
+            'confirmClear': 'Are you sure you want to clear all data? This action cannot be undone.'
+        }
+    };
+    
+    return translations[window.appState.settings.language]?.[key] || key;
 }
