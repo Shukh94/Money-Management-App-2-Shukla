@@ -555,3 +555,38 @@ function saveSettings() {
     localStorage.setItem('settings', JSON.stringify(window.appState.settings));
 }
 
+
+// Active Navigation Management - app.js এর শেষে যোগ করুন
+function updateActiveNavigation() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    // Desktop navigation update
+    const desktopNavLinks = document.querySelectorAll('.nav-link');
+    desktopNavLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+    
+    // Mobile navigation update
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    mobileNavItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href === currentPage) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+    
+    console.log('Updated active navigation for:', currentPage);
+}
+
+// DOMContentLoaded এ call করুন
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCommon();
+    updateActiveNavigation(); // এই লাইন যোগ করুন
+});

@@ -1,4 +1,4 @@
-// Mobile-Specific Functionality - PRODUCTION VERSION
+// Mobile-Specific Functionality - UPDATED VERSION
 let currentFabMenu = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -6,14 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
-    // FAB setup first (most important)
+    // Update navigation first
+    updateActiveNavigation();
+    
+    // FAB setup
     setupFABForAllDevices();
     
     // Then other mobile features
     if (window.innerWidth <= 768) {
         initializeMobile();
         setupMobileEventListeners();
-        updateMobileNavigation();
     }
     
     setupPageChangeListener();
@@ -21,16 +23,18 @@ function initializeApp() {
 
 function setupFABForAllDevices() {
     const fab = document.getElementById('fab');
-    if (!fab) return;
-    
-    // FAB কে visible করুন
-    fab.style.display = 'flex';
-    fab.style.opacity = '1';
-    fab.style.visibility = 'visible';
+    if (!fab) {
+        console.log('FAB not found');
+        return;
+    }
     
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
-    // Remove any existing event listeners by replacing the FAB
+    // Reset FAB completely
+    fab.innerHTML = '<span class="fab-icon"></span>';
+    fab.style.backgroundColor = '';
+    
+    // Remove any existing event listeners by replacing
     const newFab = fab.cloneNode(true);
     fab.parentNode.replaceChild(newFab, fab);
     
@@ -58,11 +62,12 @@ function setupFABForAllDevices() {
 
 function setupFABForDashboard() {
     const fab = document.getElementById('fab');
-    const fabIcon = fab.querySelector('.fab-icon');
+    if (!fab) return;
     
+    const fabIcon = fab.querySelector('.fab-icon');
     fab.setAttribute('title', 'দ্রুত লেনদেন যোগ করুন');
     fabIcon.textContent = '+';
-    fabIcon.style.transform = 'rotate(0deg)';
+    fab.style.backgroundColor = '#4361ee';
     
     fab.addEventListener('click', function(e) {
         e.preventDefault();
@@ -78,6 +83,91 @@ function setupFABForDashboard() {
     });
 }
 
+function setupFABForSettings() {
+    const fab = document.getElementById('fab');
+    if (!fab) return;
+    
+    const fabIcon = fab.querySelector('.fab-icon');
+    fab.setAttribute('title', 'সেটিংস সংরক্ষণ করুন');
+    fabIcon.textContent = '💾';
+    fab.style.backgroundColor = '#4CAF50';
+    
+    fab.addEventListener('click', function() {
+        const saveBtn = document.getElementById('saveSettings');
+        if (saveBtn) {
+            fab.classList.add('fab-saving');
+            saveBtn.click();
+            setTimeout(() => fab.classList.remove('fab-saving'), 1000);
+        }
+    });
+}
+
+function setupFABForTransactions() {
+    const fab = document.getElementById('fab');
+    if (!fab) return;
+    
+    const fabIcon = fab.querySelector('.fab-icon');
+    fab.setAttribute('title', 'নতুন লেনদেন যোগ করুন');
+    fabIcon.textContent = '+';
+    fab.style.backgroundColor = '#4361ee';
+    
+    fab.addEventListener('click', function() {
+        const form = document.getElementById('transactionForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+function setupFABForUpcoming() {
+    const fab = document.getElementById('fab');
+    if (!fab) return;
+    
+    const fabIcon = fab.querySelector('.fab-icon');
+    fab.setAttribute('title', 'নতুন আসন্ন খরচ যোগ করুন');
+    fabIcon.textContent = '+';
+    fab.style.backgroundColor = '#4361ee';
+    
+    fab.addEventListener('click', function() {
+        const form = document.getElementById('upcomingForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+function setupFABForFixedExpenses() {
+    const fab = document.getElementById('fab');
+    if (!fab) return;
+    
+    const fabIcon = fab.querySelector('.fab-icon');
+    fab.setAttribute('title', 'নতুন ফিক্সড খরচ যোগ করুন');
+    fabIcon.textContent = '+';
+    fab.style.backgroundColor = '#4361ee';
+    
+    fab.addEventListener('click', function() {
+        const form = document.getElementById('fixedExpenseForm');
+        if (form) {
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+function setupFABForDefault() {
+    const fab = document.getElementById('fab');
+    if (!fab) return;
+    
+    const fabIcon = fab.querySelector('.fab-icon');
+    fab.setAttribute('title', 'লেনদেন পেজে যান');
+    fabIcon.textContent = '+';
+    fab.style.backgroundColor = '#4361ee';
+    
+    fab.addEventListener('click', function() {
+        window.location.href = 'transactions.html';
+    });
+}
+
+// বাকি functions একই রাখুন (showQuickActionMenu, closeFabMenu, handleQuickAction, ইত্যাদি)
 function showQuickActionMenu() {
     if (currentFabMenu) {
         closeFabMenu();
@@ -165,71 +255,6 @@ function handleQuickAction(action) {
     }
 }
 
-// অন্যান্য FAB functions
-function setupFABForTransactions() {
-    const fab = document.getElementById('fab');
-    fab.setAttribute('title', 'নতুন লেনদেন যোগ করুন');
-    fab.querySelector('.fab-icon').textContent = '+';
-    
-    fab.addEventListener('click', function() {
-        const form = document.getElementById('transactionForm');
-        if (form) {
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-}
-
-function setupFABForSettings() {
-    const fab = document.getElementById('fab');
-    fab.setAttribute('title', 'সেটিংস সংরক্ষণ করুন');
-    fab.querySelector('.fab-icon').textContent = '💾';
-    
-    fab.addEventListener('click', function() {
-        const saveBtn = document.getElementById('saveSettings');
-        if (saveBtn) {
-            fab.classList.add('fab-saving');
-            saveBtn.click();
-            setTimeout(() => fab.classList.remove('fab-saving'), 1000);
-        }
-    });
-}
-
-function setupFABForUpcoming() {
-    const fab = document.getElementById('fab');
-    fab.setAttribute('title', 'নতুন আসন্ন খরচ যোগ করুন');
-    fab.querySelector('.fab-icon').textContent = '+';
-    
-    fab.addEventListener('click', function() {
-        const form = document.getElementById('upcomingForm');
-        if (form) {
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-}
-
-function setupFABForFixedExpenses() {
-    const fab = document.getElementById('fab');
-    fab.setAttribute('title', 'নতুন ফিক্সড খরচ যোগ করুন');
-    fab.querySelector('.fab-icon').textContent = '+';
-    
-    fab.addEventListener('click', function() {
-        const form = document.getElementById('fixedExpenseForm');
-        if (form) {
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-}
-
-function setupFABForDefault() {
-    const fab = document.getElementById('fab');
-    fab.setAttribute('title', 'লেনদেন পেজে যান');
-    fab.querySelector('.fab-icon').textContent = '+';
-    
-    fab.addEventListener('click', function() {
-        window.location.href = 'transactions.html';
-    });
-}
-
 // Mobile specific functions
 function initializeMobile() {
     if (window.innerWidth > 768) return;
@@ -239,7 +264,6 @@ function initializeMobile() {
 
 function setupMobileEventListeners() {
     if (window.innerWidth > 768) return;
-    updateMobileNavigation();
     setupTouchEvents();
     setupMobileButtonEvents();
 }
@@ -271,20 +295,6 @@ function setupMobileButtonEvents() {
             }
         });
     }
-}
-
-function updateMobileNavigation() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navItems = document.querySelectorAll('.mobile-nav-item');
-    
-    navItems.forEach(item => {
-        const href = item.getAttribute('href');
-        if (href === currentPage) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
 }
 
 function addMobilePageHeaders() {
@@ -404,12 +414,5 @@ window.addEventListener('resize', function() {
     } else {
         const mobileHeader = document.querySelector('.mobile-page-header');
         if (mobileHeader) mobileHeader.remove();
-    }
-});
-
-// Update navigation when page loads
-window.addEventListener('load', function() {
-    if (window.innerWidth <= 768) {
-        updateMobileNavigation();
     }
 });
