@@ -1,4 +1,4 @@
-// Dashboard Management
+// Dashboard Management - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     setupDashboardEventListeners();
@@ -14,37 +14,62 @@ function initializeDashboard() {
 }
 
 function setupDashboardEventListeners() {
-    // Theme Toggle
-    document.getElementById('themeToggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        window.appState.settings.darkMode = document.body.classList.contains('dark-mode');
-        saveSettings();
-    });
-
-    // Language Toggle
-    document.getElementById('languageToggle').addEventListener('click', function() {
-        const newLanguage = window.appState.settings.language === 'bn' ? 'en' : 'bn';
-        window.appState.settings.language = newLanguage;
-        saveSettings();
-        applyLanguage(newLanguage);
-        this.textContent = newLanguage === 'bn' ? 'EN' : 'BN';
-        updateDashboard();
-        updateUpcomingReminders();
-        updateRecentTransactions();
-        updateFixedExpensesSummary();
-    });
-
-    // Quick Action Buttons
-    document.querySelectorAll('.quick-action-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const action = this.getAttribute('data-action');
-            handleQuickAction(action);
+    // Theme Toggle - Check if element exists first
+    const themeToggle = document.getElementById('themeToggle') || 
+                       document.getElementById('desktopThemeToggle') || 
+                       document.getElementById('mobileThemeToggle');
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            if (window.appState && window.appState.settings) {
+                window.appState.settings.darkMode = document.body.classList.contains('dark-mode');
+                saveSettings();
+            }
         });
-    });
+    }
+
+    // Language Toggle - Check if element exists first
+    const languageToggle = document.getElementById('languageToggle') || 
+                          document.getElementById('desktopLanguageToggle') || 
+                          document.getElementById('mobileLanguageToggle');
+    
+    if (languageToggle) {
+        languageToggle.addEventListener('click', function() {
+            if (!window.appState || !window.appState.settings) return;
+            
+            const newLanguage = window.appState.settings.language === 'bn' ? 'en' : 'bn';
+            window.appState.settings.language = newLanguage;
+            saveSettings();
+            applyLanguage(newLanguage);
+            this.textContent = newLanguage === 'bn' ? 'EN' : 'BN';
+            updateDashboard();
+            updateUpcomingReminders();
+            updateRecentTransactions();
+            updateFixedExpensesSummary();
+        });
+    }
+
+    // Quick Action Buttons - Check if elements exist
+    const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+    if (quickActionBtns.length > 0) {
+        quickActionBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const action = this.getAttribute('data-action');
+                handleQuickAction(action);
+            });
+        });
+    }
 }
 
 function updateDashboard() {
+    // Check if appState exists
+    if (!window.appState || !window.appState.transactions) {
+        console.log('App state not ready yet');
+        return;
+    }
+    
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
@@ -71,11 +96,16 @@ function updateDashboard() {
         
     const currentBalance = totalIncome - totalExpense;
     
-    // Update dashboard elements
-    document.getElementById('totalIncome').textContent = formatCurrency(totalIncome);
-    document.getElementById('totalExpense').textContent = formatCurrency(totalExpense);
-    document.getElementById('currentBalance').textContent = formatCurrency(currentBalance);
-    document.getElementById('totalSavings').textContent = formatCurrency(totalSavings);
+    // Update dashboard elements - Check if elements exist
+    const totalIncomeEl = document.getElementById('totalIncome');
+    const totalExpenseEl = document.getElementById('totalExpense');
+    const currentBalanceEl = document.getElementById('currentBalance');
+    const totalSavingsEl = document.getElementById('totalSavings');
+    
+    if (totalIncomeEl) totalIncomeEl.textContent = formatCurrency(totalIncome);
+    if (totalExpenseEl) totalExpenseEl.textContent = formatCurrency(totalExpense);
+    if (currentBalanceEl) currentBalanceEl.textContent = formatCurrency(currentBalance);
+    if (totalSavingsEl) totalSavingsEl.textContent = formatCurrency(totalSavings);
     
     // Update charts if they exist
     updateDashboardCharts();
@@ -83,6 +113,8 @@ function updateDashboard() {
 
 function updateUpcomingReminders() {
     const remindersContainer = document.getElementById('upcomingReminders');
+    if (!remindersContainer || !window.appState || !window.appState.upcomingExpenses) return;
+    
     const today = new Date();
     
     // Filter upcoming expenses (not paid and due within next 7 days)
@@ -153,6 +185,7 @@ function updateUpcomingReminders() {
 
 function updateRecentTransactions() {
     const recentContainer = document.getElementById('recentTransactions');
+    if (!recentContainer || !window.appState || !window.appState.transactions) return;
     
     // Get last 5 transactions
     const recent = [...window.appState.transactions]
@@ -171,20 +204,17 @@ function updateRecentTransactions() {
     }
     
     recentContainer.innerHTML = recent.map(transaction => {
-        const amountClass = transaction.type === 'income' ? 'positive' : 'negative';
+        const amountClass = transaction.type === 'income' ? 'income' : 'expense';
         const amountSign = transaction.type === 'income' ? '+' : '-';
         
         return `
-            <div class="activity-item">
-                <div class="activity-icon ${transaction.type}">
-                    ${transaction.type === 'income' ? '💰' : transaction.type === 'expense' ? '💸' : '🏦'}
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <h4>${getCategoryLabel(transaction.category)}</h4>
+                    <p>${transaction.description || ''}</p>
+                    <p>${formatDate(transaction.date)}</p>
                 </div>
-                <div class="activity-content">
-                    <div class="activity-title">${getCategoryLabel(transaction.category)}</div>
-                    <div class="activity-description">${transaction.description || ''}</div>
-                    <div class="activity-date">${formatDate(transaction.date)}</div>
-                </div>
-                <div class="activity-amount ${amountClass}">
+                <div class="transaction-amount ${amountClass}">
                     ${amountSign}${formatCurrency(transaction.amount)}
                 </div>
             </div>
@@ -194,6 +224,7 @@ function updateRecentTransactions() {
 
 function updateFixedExpensesSummary() {
     const summaryContainer = document.getElementById('fixedExpensesSummary');
+    if (!summaryContainer || !window.appState || !window.appState.fixedExpenses) return;
     
     // Get active fixed expenses
     const activeFixed = window.appState.fixedExpenses.filter(expense => expense.active);
@@ -237,6 +268,9 @@ function updateFixedExpensesSummary() {
 }
 
 function updateFinancialHealth() {
+    const healthElement = document.getElementById('financialHealth');
+    if (!healthElement || !window.appState || !window.appState.transactions) return;
+    
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
@@ -271,39 +305,38 @@ function updateFinancialHealth() {
         }
     }
     
-    // Update health indicator if element exists
-    const healthElement = document.getElementById('financialHealth');
-    if (healthElement) {
-        let healthStatus = '';
-        let healthClass = '';
-        
-        if (healthScore >= 80) {
-            healthStatus = window.appState.settings.language === 'bn' ? 'চমৎকার' : 'Excellent';
-            healthClass = 'excellent';
-        } else if (healthScore >= 60) {
-            healthStatus = window.appState.settings.language === 'bn' ? 'ভাল' : 'Good';
-            healthClass = 'good';
-        } else if (healthScore >= 40) {
-            healthStatus = window.appState.settings.language === 'bn' ? 'মধ্যম' : 'Fair';
-            healthClass = 'fair';
-        } else {
-            healthStatus = window.appState.settings.language === 'bn' ? 'খারাপ' : 'Poor';
-            healthClass = 'poor';
-        }
-        
-        healthElement.innerHTML = `
-            <div class="financial-health">
-                <div class="health-label">${healthStatus}</div>
-                <div class="health-meter">
-                    <div class="health-progress ${healthClass}" style="width: ${healthScore}%"></div>
-                </div>
-                <div class="health-score">${healthScore}%</div>
-            </div>
-        `;
+    let healthStatus = '';
+    let healthClass = '';
+    
+    if (healthScore >= 80) {
+        healthStatus = window.appState.settings.language === 'bn' ? 'চমৎকার' : 'Excellent';
+        healthClass = 'excellent';
+    } else if (healthScore >= 60) {
+        healthStatus = window.appState.settings.language === 'bn' ? 'ভাল' : 'Good';
+        healthClass = 'good';
+    } else if (healthScore >= 40) {
+        healthStatus = window.appState.settings.language === 'bn' ? 'মধ্যম' : 'Fair';
+        healthClass = 'fair';
+    } else {
+        healthStatus = window.appState.settings.language === 'bn' ? 'খারাপ' : 'Poor';
+        healthClass = 'poor';
     }
+    
+    healthElement.innerHTML = `
+        <div class="financial-health">
+            <div class="health-label">${healthStatus}</div>
+            <div class="health-meter">
+                <div class="health-progress ${healthClass}" style="width: ${healthScore}%"></div>
+            </div>
+            <div class="health-score">${healthScore}%</div>
+        </div>
+    `;
 }
 
 function updateMonthlyComparison() {
+    const comparisonElement = document.getElementById('monthlyComparison');
+    if (!comparisonElement || !window.appState || !window.appState.transactions) return;
+    
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
@@ -345,31 +378,27 @@ function updateMonthlyComparison() {
     const incomeChange = prevIncome > 0 ? ((currentIncome - prevIncome) / prevIncome) * 100 : 0;
     const expenseChange = prevExpense > 0 ? ((currentExpense - prevExpense) / prevExpense) * 100 : 0;
     
-    // Update comparison if element exists
-    const comparisonElement = document.getElementById('monthlyComparison');
-    if (comparisonElement) {
-        comparisonElement.innerHTML = `
-            <div class="comparison-card">
-                <div class="comparison-item current">
-                    <div class="comparison-label">${getTranslation('currentMonth')}</div>
-                    <div class="comparison-value">${formatCurrency(currentIncome - currentExpense)}</div>
-                    <div class="comparison-change ${incomeChange >= 0 ? 'positive' : 'negative'}">
-                        ${incomeChange >= 0 ? '↑' : '↓'} ${Math.abs(incomeChange).toFixed(1)}%
-                    </div>
-                </div>
-                <div class="comparison-item previous">
-                    <div class="comparison-label">${getTranslation('previousMonth')}</div>
-                    <div class="comparison-value">${formatCurrency(prevIncome - prevExpense)}</div>
-                    <div class="comparison-change">${getTranslation('baseline')}</div>
+    comparisonElement.innerHTML = `
+        <div class="comparison-card">
+            <div class="comparison-item current">
+                <div class="comparison-label">${getTranslation('currentMonth')}</div>
+                <div class="comparison-value">${formatCurrency(currentIncome - currentExpense)}</div>
+                <div class="comparison-change ${incomeChange >= 0 ? 'positive' : 'negative'}">
+                    ${incomeChange >= 0 ? '↑' : '↓'} ${Math.abs(incomeChange).toFixed(1)}%
                 </div>
             </div>
-        `;
-    }
+            <div class="comparison-item previous">
+                <div class="comparison-label">${getTranslation('previousMonth')}</div>
+                <div class="comparison-value">${formatCurrency(prevIncome - prevExpense)}</div>
+                <div class="comparison-change">${getTranslation('baseline')}</div>
+            </div>
+        </div>
+    `;
 }
 
 function updateDashboardCharts() {
     // Check if Chart.js is available and chart container exists
-    if (typeof Chart === 'undefined' || !document.getElementById('dashboardChart')) {
+    if (typeof Chart === 'undefined' || !document.getElementById('dashboardChart') || !window.appState) {
         return;
     }
     
@@ -475,6 +504,8 @@ function handleQuickAction(action) {
 
 // Global function for marking upcoming as paid
 window.markUpcomingAsPaid = function(id) {
+    if (!window.appState || !window.appState.upcomingExpenses) return;
+    
     if (confirm(window.appState.settings.language === 'bn' ? 
         'আপনি কি এই খরচটি পরিশোধিত হিসেবে চিহ্নিত করতে চান?' : 
         'Are you sure you want to mark this expense as paid?')) {
@@ -496,6 +527,8 @@ window.markUpcomingAsPaid = function(id) {
 
 // Utility function to get category label
 function getCategoryLabel(category) {
+    if (!window.appState || !window.appState.settings) return category;
+    
     const labels = {
         // Income categories
         salary: window.appState.settings.language === 'bn' ? 'বেতন' : 'Salary',
